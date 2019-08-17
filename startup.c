@@ -7,9 +7,9 @@ extern unsigned long _ebss;
 
 extern int main(void);
 
-unsigned long default_handler(void);
+void default_handler(void);
 
-__attribute__((naked)) unsigned long reset()
+__attribute__((naked)) void reset()
 {
     unsigned long *source = &_sidata;
     unsigned long *destination = &_sdata;
@@ -32,11 +32,15 @@ __attribute__((section(".vector")))
 const unsigned long vector_table[] =
 {
     (unsigned long)&_estack,
-    (unsigned long)reset,
-    (unsigned long)default_handler
+    (unsigned long)&reset,
+    (unsigned long)&default_handler
 };
 
-unsigned long default_handler(void)
+void default_handler(void)
 {
+    /**
+     * Replace this endless loop with a proper handler
+     * in production code.
+     */
     while (1);
 }
